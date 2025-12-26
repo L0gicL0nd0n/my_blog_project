@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Documentation</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        .endpoint { border-left: 4px solid #007bff; padding: 15px; margin: 20px 0; background: #f8f9fa; }
+        .method { padding: 5px 10px; color: white; border-radius: 3px; font-weight: bold; }
+        .get { background: #28a745; }
+        .post { background: #007bff; }
+        .put { background: #ffc107; color: black; }
+        .delete { background: #dc3545; }
+        pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/articles">← Back to Articles</a>
+    </nav>
+    
+    <h1>📖 API Documentation</h1>
+    
+    <div class="endpoint">
+        <span class="method get">GET</span> <code>/api/articles</code>
+        <h3>Get All Articles</h3>
+        <p>Returns JSON array of all articles</p>
+        <a href="/api/articles" target="_blank">Try it →</a>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method post">POST</span> <code>/api/articles</code>
+        <h3>Create New Article</h3>
+        <p>Create a new article with JSON data</p>
+        <pre>{
+    "title": "Article Title",
+    "content": "Article content here"
+}</pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method get">GET</span> <code>/api/articles/&lt;id&gt;</code>
+        <h3>Get Single Article</h3>
+        <p>Get article by ID</p>
+        <p>Example: <a href="/api/articles/1" target="_blank"><code>/api/articles/1</code></a></p>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method put">PUT</span> <code>/api/articles/&lt;id&gt;</code>
+        <h3>Update Article</h3>
+        <p>Update article by ID</p>
+        <pre>{
+    "title": "Updated Title",
+    "content": "Updated content"
+}</pre>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method delete">DELETE</span> <code>/api/articles/&lt;id&gt;</code>
+        <h3>Delete Article</h3>
+        <p>Delete article by ID</p>
+    </div>
+    
+    <h2>Testing Examples</h2>
+    
+    <h3>Using cURL:</h3>
+    <pre>
+# Get all articles
+curl http://localhost:5000/api/articles
+
+# Create article
+curl -X POST http://localhost:5000/api/articles \
+    -H "Content-Type: application/json" \
+    -d '{"title":"Test","content":"API test"}'
+
+# Update article
+curl -X PUT http://localhost:5000/api/articles/1 \
+    -H "Content-Type: application/json" \
+    -d '{"title":"Updated Title"}'
+    </pre>
+    
+    <h3>Using Python:</h3>
+    <pre>
+import requests
+
+# Get articles
+response = requests.get('http://localhost:5000/api/articles')
+print(response.json())
+
+# Create article
+new_article = {
+    'title': 'Python Test',
+    'content': 'Created via Python'
+}
+response = requests.post('http://localhost:5000/api/articles', json=new_article)
+print(response.json())
+    </pre>
+</body>
+</html>

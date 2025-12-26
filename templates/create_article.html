@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Article</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        input, textarea { width: 100%; padding: 10px; margin: 5px 0; }
+        .api-example { background: #f5f5f5; padding: 15px; margin: 15px 0; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/articles">← Back to Articles</a>
+    </nav>
+    
+    <h1>Create New Article</h1>
+    
+    <form method="POST">
+        <input type="text" name="title" placeholder="Article Title" required><br>
+        <textarea name="content" rows="10" placeholder="Write your content here..." required></textarea><br>
+        <button type="submit">Save Article</button>
+        <a href="/articles">Cancel</a>
+    </form>
+    
+    <div class="api-example">
+        <h3>💡 API Alternative:</h3>
+        <p>Create article via API (JSON):</p>
+        <pre>
+POST /api/articles
+Content-Type: application/json
+
+{
+    "title": "Your Article Title",
+    "content": "Your article content here"
+}
+        </pre>
+    </div>
+</body>
+</html> 

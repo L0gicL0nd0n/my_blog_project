@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Article</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        input, textarea { width: 100%; padding: 10px; margin: 5px 0; }
+        .api-methods { background: #f8f9fa; padding: 15px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/articles">← Back to Articles</a>
+    </nav>
+    
+    <h1>Edit Article</h1>
+    
+    <form method="POST">
+        <input type="text" name="title" value="{{ article[1] }}" required><br>
+        <textarea name="content" rows="10" required>{{ article[2] }}</textarea><br>
+        <button type="submit">Update Article</button>
+        <a href="/articles">Cancel</a>
+    </form>
+    
+    <div class="api-methods">
+        <h3>🔗 API Methods for this Article:</h3>
+        <ul>
+            <li><strong>GET</strong> <a href="/api/articles/{{ article[0] }}" target="_blank"><code>/api/articles/{{ article[0] }}</code></a> - View as JSON</li>
+            <li><strong>PUT</strong> <code>/api/articles/{{ article[0] }}</code> - Update via API (send JSON)</li>
+            <li><strong>DELETE</strong> <code>/api/articles/{{ article[0] }}</code> - Delete via API</li>
+        </ul>
+    </div>
+</body>
+</html>
