@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Blog - No Server Needed</title>
+    <style>
+        body { font-family: Arial; margin: 40px; max-width: 800px; }
+        .article { border: 1px solid #ddd; padding: 20px; margin: 10px 0; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <h1>My Blog</h1>
+    
+    <div id="articles-view">
+        <button onclick="showCreateForm()">Create New Article</button>
+        <hr>
+        <div id="articles-list">
+            <!-- Articles will appear here -->
+        </div>
+    </div>
+    
+    <div id="create-view" class="hidden">
+        <h2>Create Article</h2>
+        <form onsubmit="createArticle(event)">
+            <input type="text" id="title" placeholder="Title" required style="width:100%; padding:10px; margin:5px 0;"><br>
+            <textarea id="content" rows="10" placeholder="Content" required style="width:100%; padding:10px; margin:5px 0;"></textarea><br>
+            <button type="submit">Save</button>
+            <button type="button" onclick="showArticles()">Cancel</button>
+        </form>
+    </div>
+    
+    <div id="edit-view" class="hidden">
+        <h2>Edit Article</h2>
+        <form onsubmit="updateArticle(event)">
+            <input type="hidden" id="edit-id">
+            <input type="text" id="edit-title" required style="width:100%; padding:10px; margin:5px 0;"><br>
+            <textarea id="edit-content" rows="10" required style="width:100%; padding:10px; margin:5px 0;"></textarea><br>
+            <button type="submit">Update</button>
+            <button type="button" onclick="showArticles()">Cancel</button>
+        </form>
+    </div>
+
+    <script>
+        // Store articles in browser's localStorage
+        let articles = JSON.parse(localStorage.getItem('blog_articles')) || [
+            {id: 1, title: "Welcome to My Blog", content: "This is your first article. Edit it or create new ones!", created_at: new Date().toLocaleString()}
+        ];
+        
+        function showArticles() {
+            document.getElementById('articles-view').classList.remove('hidden');
+            document.getElementById('create-view').classList.add('hidden');
+            document.getElementById('edit-view').classList.add('hidden');
+            
+            let html = '';
+            articles.forEach(article => {
+                html += `
+                <div class="article">
+                    <h3>${article.title}</h3>
+                    <p>${article.content.substring(0, 100)}${article.content.length > 100 ? '...' : ''}</p>
+                    <small>Created: ${article.created_at}</small><br>
+                    <button onclick="editArticle(${article.id})">Edit</button>
+                    <button onclick="deleteArticle(${article.id})">Delete</button>
+                </div>
+                `;
+            });
+            
+            document.getElementById('articles-list').innerHTML = html || '<p>No articles yet. Create one!</p>';
+        }
+        
+        function showCreateForm() {
+            document.getElementById('articles-view').classList.add('hidden');
+            document.getElementById('create-view').classList.remove('hidden');
+            document.getElementById('edit-view').classList.add('hidden');
+            document.getElementById('title').value = '';
+            document.getElementById('content').value = '';
+        }
+        
+        function createArticle(e) {
+            e.preventDefault();
+            const newId = articles.length > 0 ? Math.max(...articles.map(a => a.id)) + 1 : 1;
+            
+            articles.push({
+                id: newId,
+                title: document.getElementById('title').value,
+                content: document.getElementById('content').value,
+                created_at: new Date().toLocaleString()
+            });
+            
+            localStorage.setItem('blog_articles', JSON.stringify(articles));
+            showArticles();
+        }
+        
+        function editArticle(id) {
+            const article = articles.find(a => a.id === id);
+            if (!article) return;
+            
+            document.getElementById('articles-view').classList.add('hidden');
+            document.getElementById('create-view').classList.add('hidden');
+            document.getElementById('edit-view').classList.remove('hidden');
+            
+            document.getElementById('edit-id').value = article.id;
+            document.getElementById('edit-title').value = article.title;
+            document.getElementById('edit-content').value = article.content;
+        }
+        
+        function updateArticle(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('edit-id').value);
+            const article = articles.find(a => a.id === id);
+            
+            if (article) {
+                article.title = document.getElementById('edit-title').value;
+                article.content = document.getElementById('edit-content').value;
+                localStorage.setItem('blog_articles', JSON.stringify(articles));
+            }
+            
+            showArticles();
+        }
+        
+        function deleteArticle(id) {
+            if (confirm('Delete this article?')) {
+                articles = articles.filter(a => a.id !== id);
+                localStorage.setItem('blog_articles', JSON.stringify(articles));
+                showArticles();
+            }
+        }
+        
+        // Initial load
+        showArticles();
+        
+        // Simulate routes for assignment
+        console.log("Available 'routes':");
+        console.log("  • /articles - View all articles");
+        console.log("  • /articles/create - Create article");
+        console.log("  • /articles/1/edit - Edit article (change ID)");
+    </script>
+</body>
+</html>
